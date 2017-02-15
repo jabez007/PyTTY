@@ -23,7 +23,6 @@ class IORedirector(object):
 
 
 class StdoutRedirector(IORedirector):
-    
     '''A class for redirecting stdout to this Text widget.'''
     def write(self, message):
         self.text_area.config(state = "normal")
@@ -35,9 +34,7 @@ class StdoutRedirector(IORedirector):
 
 
 def send_command(event):
-    command = entry_box.get().strip()
-    shell.execute(command)
-    entry_box.delete(0, "end")
+    shell.execute(event.char)
 
 # # # #
 
@@ -47,17 +44,13 @@ root = Tk()
 text_box = Text(root)
 text_box.pack()
 sys.stdout = StdoutRedirector(text_box)
-
-entry_box = Entry(root)
-entry_box.pack(fill=X)
+text_box.bind("<Key>", send_command)
 
 shell = ShellHandler("epic-cde",
                      username=username,
                      password=password)
 
-root.bind("<Return>", send_command)
 root.mainloop()
 
 # To stop redirecting stdout:
 sys.stdout = sys.__stdout__
-

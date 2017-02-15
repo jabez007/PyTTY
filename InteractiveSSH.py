@@ -68,18 +68,23 @@ class ShellHandler(object):
         if __name__ == "__main__":
             try:
                 while True:
-                    command = raw_input("").strip()  # sys.stdin.read(1)
-                    #if not command:
-                        #break
+                    command = sys.stdin.read(1)  # raw_input("").strip()
+
+                    if not command:
+                        break
+
                     self.execute(command)
+
             except (EOFError, socket.error):
                 # user hit ^Z or F6, or exited the SSH session
                 pass
 
     def execute(self, command):
+        if any(command == enter for enter in ["\n", "\r", "\n\r", "\r\n"]):
+            command = "\r"
+
         try:
             self.channel.send(command)
-            self.channel.send("\r")
         except (EOFError, socket.error):
             # user hit ^Z or F6, or exited the SSH session
             pass
