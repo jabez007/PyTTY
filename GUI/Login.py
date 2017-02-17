@@ -9,6 +9,7 @@ class Login(Frame):
 
     def __init__(self, master=None, cnf={}, **kwargs):
         Frame.__init__(self, master, cnf, **kwargs)
+        self.bind("<Destroy>", self._del_)
 
         self.environment = Entry()
         self.port = Entry()
@@ -17,6 +18,10 @@ class Login(Frame):
         self.shell = None
 
         self._init_ui_()
+
+    def _del_(self, event=None):
+        if self.shell:
+            self.shell.__del__()
 
     def _init_ui_(self):
         self.pack(side=TOP,

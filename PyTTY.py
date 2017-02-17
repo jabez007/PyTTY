@@ -1,6 +1,10 @@
 from tkinter import *
 import GUI
 
+
 root = Tk()
-GUI.PyTTY(root)
+root.title("PtTTY")
+# root.protocol("WM_DELETE_WINDOW", on_exit)
+gui = GUI.PyTTY(root)
 root.mainloop()
+root.quit()
